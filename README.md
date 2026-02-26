@@ -49,4 +49,3 @@ DELETE /api/cart
 ## 📸 Скриншоты
 
 ![Главная страница](screenshots/main.png)
-![Корзина](screenshots/cart.png)
