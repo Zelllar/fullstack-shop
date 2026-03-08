@@ -1,50 +1,169 @@
-# Fullstack Интернет-магазин
+Fullstack Интернет-магазин
 
-Полноценное fullstack-приложение интернет-магазина с клиентской частью, backend API и базой данных PostgreSQL.
+Учебный fullstack проект интернет-магазина с авторизацией пользователей, REST API и хранением данных в PostgreSQL.
 
-## Стек технологий
+Проект демонстрирует базовую архитектуру backend приложения на Node.js и работу frontend с API.
 
-Frontend:
-- HTML
-- CSS
-- JavaScript (ES6+)
-- Fetch API
+🚀 Технологии
+Frontend
 
-Backend:
-- Node.js
-- Express
+HTML
 
-Database:
-- PostgreSQL
-- SQL (JOIN, INSERT, UPDATE, DELETE)
+CSS
 
-## Функциональность
+JavaScript (ES6)
 
-- Получение списка товаров с сервера
-- Добавление товаров в корзину
-- Увеличение количества товаров
-- Удаление товаров из корзины
-- Очистка корзины
-- Хранение данных корзины в PostgreSQL
-- Клиент-серверное взаимодействие через REST API
+Fetch API
 
-## Архитектура
+LocalStorage (JWT токен)
 
-Frontend → Backend (Express) → PostgreSQL
+Backend
 
-## API
+Node.js
 
-### Товары
+Express
+
+JWT авторизация
+
+Middleware
+
+Database
+
+PostgreSQL
+
+SQL (SELECT, INSERT, UPDATE, DELETE, JOIN)
+
+⚙️ Функциональность
+Пользователь
+
+регистрация
+
+авторизация
+
+JWT аутентификация
+
+получение данных пользователя
+
+Товары
+
+получение списка товаров
+
+просмотр информации о товаре
+
+Корзина
+
+добавление товара
+
+увеличение количества
+
+удаление товара
+
+очистка корзины
+
+хранение корзины в PostgreSQL
+
+🏗 Архитектура проекта
+
+Backend разделён на слои:
+
+controllers/
+routes/
+middleware/
+db.js
+server.js
+
+Структура:
+
+backend
+│
+├── controllers
+│   ├── authController.js
+│   ├── cartController.js
+│   └── productController.js
+│
+├── routes
+│   ├── authRoutes.js
+│   ├── cartRoutes.js
+│   └── productRoutes.js
+│
+├── middleware
+│   └── authMiddleware.js
+│
+├── db.js
+├── server.js
+└── package.json
+
+Архитектура приложения:
+
+Frontend → REST API (Express) → PostgreSQL
+🔑 API
+Авторизация
+
+Регистрация
+
+POST /api/auth/register
+
+Вход
+
+POST /api/auth/login
+
+Получение профиля пользователя
+
+GET /api/profile
+Товары
+
+Получить список товаров
 
 GET /api/products
-GET /api/products/:id
 
-### Корзина
+Получить товар
+
+GET /api/products/:id
+Корзина (требуется авторизация)
+
+Получить корзину
 
 GET /api/cart
+
+Добавить товар
+
 POST /api/cart
-DELETE /api/cart/:id
+
+Удалить товар
+
+DELETE /api/cart/:product_id
+
+Очистить корзину
+
 DELETE /api/cart
+▶️ Запуск проекта
+
+Установить зависимости
+
+npm install
+
+Запуск сервера
+
+npm run dev
+
+или
+
+npm start
+🗄 База данных
+
+PostgreSQL используется для хранения:
+
+пользователей
+
+товаров
+
+корзины пользователей
+
+Основные таблицы:
+
+users
+products
+cart
 
 ## 📸 Скриншоты
 
