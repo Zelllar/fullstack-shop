@@ -10,34 +10,36 @@
 </head>
 
 <body>
-    <div id="user-status"></div>
-    <div id="auth">
-        <h2>Регистрация</h2>
+    <div class="container">
+        <div id="user-status"></div>
+        <div id="auth">
+            <h2>Регистрация</h2>
 
-        <input type="email" id="regEmail" placeholder="Email">
-        <input type="password" id="regPassword" placeholder="Пароль">
+            <input type="email" id="regEmail" placeholder="Email">
+            <input type="password" id="regPassword" placeholder="Пароль">
 
-        <button id="registerBtn">Зарегистрироваться</button>
+            <button id="registerBtn">Зарегистрироваться</button>
 
-        <h2>Вход</h2>
+            <h2>Вход</h2>
 
-        <input type="email" id="loginEmail" placeholder="Email">
-        <input type="password" id="loginPassword" placeholder="Пароль">
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Пароль">
 
-        <button id="loginBtn">Войти</button>
-    </div>
-    <button id="logoutBtn">Выйти</button>
-    <div class="header">
-        <h1>Магазин</h1>
-        <div class="cart-icon">
-            🛒
-            <span id="cart-count" class="cart-count">0</span>
+            <button id="loginBtn">Войти</button>
         </div>
+        <button id="logoutBtn">Выйти</button>
+        <div class="header">
+            <h1>Магазин</h1>
+            <div class="cart-icon">
+                🛒
+                <span id="cart-count" class="cart-count">0</span>
+            </div>
+        </div>
+        <div id="products" class="products"></div>
+        <h2>Корзина</h2>
+        <div id="cart"></div>
+        <script src="script.js"></script>
     </div>
-    <div id="products" class="products"></div>
-    <h2>Корзина</h2>
-    <div id="cart"></div>
-    <script src="script.js"></script>
 </body>
 
 </html>

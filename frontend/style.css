@@ -99,3 +99,8 @@ button:hover {
   display: none;
   margin-bottom: 15px;
 }
+
+#user-status {
+  margin-bottom: 15px;
+  font-weight: 500;
+}
