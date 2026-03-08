@@ -1,10 +1,10 @@
-Fullstack Интернет-магазин
+# Fullstack Интернет-магазин
 
 Учебный fullstack проект интернет-магазина с авторизацией пользователей, REST API и хранением данных в PostgreSQL.
 
 Проект демонстрирует базовую архитектуру backend приложения на Node.js и работу frontend с API.
 
-🚀 Технологии
+## 🚀 Технологии
 Frontend
 
 HTML
@@ -33,7 +33,7 @@ PostgreSQL
 
 SQL (SELECT, INSERT, UPDATE, DELETE, JOIN)
 
-⚙️ Функциональность
+## ⚙️ Функциональность
 Пользователь
 
 регистрация
@@ -62,7 +62,7 @@ JWT аутентификация
 
 хранение корзины в PostgreSQL
 
-🏗 Архитектура проекта
+## 🏗 Архитектура проекта
 
 Backend разделён на слои:
 
@@ -72,31 +72,10 @@ middleware/
 db.js
 server.js
 
-Структура:
-
-backend
-│
-├── controllers
-│   ├── authController.js
-│   ├── cartController.js
-│   └── productController.js
-│
-├── routes
-│   ├── authRoutes.js
-│   ├── cartRoutes.js
-│   └── productRoutes.js
-│
-├── middleware
-│   └── authMiddleware.js
-│
-├── db.js
-├── server.js
-└── package.json
-
-Архитектура приложения:
+## Архитектура приложения:
 
 Frontend → REST API (Express) → PostgreSQL
-🔑 API
+## 🔑 API
 Авторизация
 
 Регистрация
@@ -136,7 +115,7 @@ DELETE /api/cart/:product_id
 Очистить корзину
 
 DELETE /api/cart
-▶️ Запуск проекта
+## ▶️ Запуск проекта
 
 Установить зависимости
 
@@ -149,9 +128,9 @@ npm run dev
 или
 
 npm start
-🗄 База данных
+База данных
 
-PostgreSQL используется для хранения:
+## PostgreSQL используется для хранения:
 
 пользователей
 
