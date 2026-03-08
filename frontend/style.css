@@ -94,3 +94,8 @@ button:hover {
   background-color: #fafafa;
   gap: 16px;
 }
+
+#logoutBtn {
+  display: none;
+  margin-bottom: 15px;
+}

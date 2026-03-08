@@ -6,6 +6,10 @@ let products = [];
 
 let cart = [];
 
+function getToken() {
+  return localStorage.getItem("token");
+}
+
 const currencyFormatter = new Intl.NumberFormat("ru-RU", {
   style: "currency",
   currency: "RUB"
@@ -13,6 +17,12 @@ const currencyFormatter = new Intl.NumberFormat("ru-RU", {
 
 async function loadProducts() {
   const response = await fetch("http://localhost:3000/api/products");
+
+  if (!response.ok){
+    console.error("Ошибка загрузки товаров");
+    return;
+  }
+
   const data = await response.json();
 
   products = data;
@@ -37,15 +47,16 @@ function renderProducts() {
 
   button.addEventListener("click", async () => {
 
-    await fetch("http://localhost:3000/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        productId: product.id
-      })
-    });
+  await fetch("http://localhost:3000/api/cart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getToken()
+    },
+    body: JSON.stringify({
+      product_id: product.id,
+    })
+  });
 
     await loadCart();
 
@@ -57,7 +68,10 @@ function renderProducts() {
 
 async function removeFromCart(id) {
   await fetch(`http://localhost:3000/api/cart/${id}`, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + getToken()
+    }
   });
 
   await loadCart();
@@ -65,7 +79,10 @@ async function removeFromCart(id) {
 
 async function clearCart() {
   await fetch("http://localhost:3000/api/cart", {
-    method: "DELETE"
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + getToken()
+    }
   });
 
   await loadCart();
@@ -90,7 +107,7 @@ function renderCart() {
     const removeButton = div.querySelector(".remove-btn");
 
     removeButton.addEventListener("click", () => {
-      removeFromCart(item.id);
+      removeFromCart(item.product_id);
     });
 
     cartContainer.appendChild(div);
@@ -117,7 +134,24 @@ function updateCartCount() {
 }
 
 async function loadCart() {
-  const response = await fetch("http://localhost:3000/api/cart");
+  const token = getToken();
+
+  if (!token) {
+    console.log("Пользователь не авторизован");
+    return;
+  }
+
+  const response = await fetch("http://localhost:3000/api/cart", {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  if (!response.ok) {
+    console.error("Ошибка загрузки корзины");
+    return;
+  }
+
   const data = await response.json();
 
   cart = data;
@@ -125,7 +159,144 @@ async function loadCart() {
   updateCartCount();
 }
 
+document.getElementById("registerBtn").addEventListener("click", async () => {
+
+  const email = document.getElementById("regEmail").value;
+  const password = document.getElementById("regPassword").value;
+
+  if (!isValidEmail(email)) {
+    alert("Введите корректный email");
+    return;
+  }
+
+  if (!isStrongPassword(password)) {
+    alert("Пароль должен содержать минимум 8 символов, заглавную букву, цифру и спецсимвол");
+    return;
+  }
+
+  const res = await fetch("http://localhost:3000/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error);
+    return;
+  }
+
+  alert("Регистрация успешна");
+
+});
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const res = await fetch("http://localhost:3000/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error);
+    return;
+  }
+
+  localStorage.setItem("token", data.token);
+  updateUserStatus();
+  await loadCart();
+
+  alert("Вход выполнен");
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  cart = [];
+  renderCart();
+  updateCartCount();
+  updateUserStatus();
+  alert("Вы вышли из аккаунта");
+});
+
+window.addEventListener("load", () => {
+  updateUserStatus();
+  const token = getToken();
+
+  if (token) {
+    loadCart();
+  }
+});
+
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getToken()
+  };
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isStrongPassword(password) {
+  return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password);
+}
+
+async function updateUserStatus() {
+
+  const status = document.getElementById("user-status");
+  const authBlock = document.getElementById("auth");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  const token = getToken();
+
+  if (!token) {
+    status.textContent = "Вы не вошли в аккаунт";
+    authBlock.style.display = "block";
+    logoutBtn.style.display = "none";
+    return;
+  }
+
+  try {
+
+    const res = await fetch("http://localhost:3000/api/profile", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    });
+
+    if (!res.ok) {
+      status.textContent = "Ошибка авторизации";
+      authBlock.style.display = "block";
+      logoutBtn.style.display = "none";
+      return;
+    }
+
+    const data = await res.json();
+
+    status.textContent = "Вы вошли как: " + data.user.email;
+
+    authBlock.style.display = "none";
+    logoutBtn.style.display = "block";
+
+  } catch (err) {
+
+    status.textContent = "Ошибка соединения";
+    authBlock.style.display = "block";
+
+  }
+
+}
+
 loadProducts();
 loadCart();
-renderCart();
-updateCartCount();
